@@ -1,0 +1,18 @@
+<h1><div class="font-weight-bold text-center">MY BOOKINGS - {{selectedUserId}}</div></h1>
+
+<ul *ngFor="let booking of allBookings">
+    <span *ngIf="booking.userId === this.selectedUserId">
+        <li class="list-group-item"> 
+            {{booking.roomName}} :  {{booking.availabilityId|date: 'medium'}}
+            <button class="btn btn-danger float-right" (click)="cancelBooking(booking)">Cancel</button>
+        </li>
+    </span>
+</ul>
+
+
+<div>
+    <a class ="btn btn-primary" routerLink = "/home" [queryParams]="{user:selectedUserId}">
+        Back
+    </a>
+</div>
+    

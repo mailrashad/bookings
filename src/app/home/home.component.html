@@ -1,0 +1,32 @@
+<span class = "font-weight-bold">CURRENT USER: {{selectedUserId}} </span> &nbsp; &nbsp;
+
+<select #userId name="user" id ="user">
+    <option value="USER 1">User 1</option>
+    <option value="USER 2">User 2</option>
+</select> &nbsp; &nbsp;
+<button class="btn btn-secondary" (click)="selectUser(userId)"> Change User</button>
+<br><br>
+        
+<div *ngIf="selectedUserId">
+    <span class="font-weight-bold"> Please select a room: </span> <br><br>
+    <div class="row">
+        <div *ngFor = "let room of rooms">
+            <div class = "col-md-3">
+                <a class="btn btn-info" [routerLink]="['/home', room]" [queryParams]="{user:selectedUserId}">
+                    {{room}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br>
+
+<div>
+    <a routerLink="/bookings" [queryParams]="{user:selectedUserId}" class="btn btn-primary">My Bookings</a>
+</div>
+
+
+    
+
+    

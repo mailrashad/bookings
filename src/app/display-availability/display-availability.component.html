@@ -1,0 +1,72 @@
+<h1><div class="font-weight-bold text-center">{{room}}</div></h1>
+<br><br>
+
+<button class ="btn btn-link" (click)="previousMonth(daysRange[0])"><-</button> &nbsp;&nbsp;
+<button class ="btn btn-info" style="width: 200px;">{{daysRange[0]|date: 'MMMM y'}}</button>
+&nbsp;&nbsp;<button class ="btn btn-link" (click)="nextMonth(daysRange[0])">-></button> 
+<br><br>
+
+<table class="table table-bordered">
+    <tr>
+        <th></th>
+        <th *ngFor="let day of days">{{day.day}}</th>
+        <th></th>
+    </tr>
+    <tr>
+        <td>
+            <button class ="btn btn-link" (click) ="previousDate(daysRange[0])"> <== </button>
+        </td>
+        <td *ngFor="let day of days">
+        <span *ngFor="let range of daysRange">
+            <span *ngIf="range.getDay() === day.id">
+                <button class = "btn dateslots" 
+                    [class.btn-primary]="(range|date) === (selected|date)"
+                    [class.btn-secondary]="(range|date) !== (selected|date)"
+                    (click)="changeDateSelection(range)">
+                    {{range | date: 'd'}}
+                </button>
+            </span>
+        </span>
+        </td>
+        <td>
+            <button class ="btn btn-link" (click)="nextDate(daysRange[daysRangeLength])">==>
+            </button>
+        </td>
+    </tr>
+</table>
+
+<br>          
+<div class = "font-weight-bold"> {{selected|date}}: <br>
+</div>
+<span *ngFor = "let x of availability|async; index as i">
+    <span *ngIf = "((x.startTime|date) === (selected|date)) && (x.roomName === room)">
+        <span *ngIf="bookings|async as bookings">
+
+        <span *ngIf="!checkIfBookedByMe(x, bookings); else mybooking">
+            <button (click) = "bookSlot(x)"
+            class = "btn btn-secondary timeslots"
+            [disabled]="x.booked || (x.startTime < todaysDate)">
+            {{x.startTime | date: 'shortTime'}} 
+        </button>&nbsp; &nbsp;
+        </span>
+        
+        <ng-template #mybooking>
+            <button class = "btn btn-success timeslots"
+            (click)="cancelBooking(x)">
+            {{x.startTime | date: 'shortTime'}} 
+        </button>&nbsp; &nbsp;
+        </ng-template>
+        </span>
+        
+        <span *ngIf="(i+1)%4===0"><br><br></span>
+    </span>
+</span>
+
+<div>
+    <a class ="btn btn-primary" routerLink = "/home" [queryParams]="{user:selectedUserId}">
+        Back
+    </a>
+</div>
+
+
+    
